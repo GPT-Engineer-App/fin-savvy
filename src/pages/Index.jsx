@@ -39,6 +39,11 @@ const Index = () => {
     return parseFloat(income) - calculateTotalExpenses();
   };
 
+  const calculateTimeToGoal = () => {
+    const monthlySavings = parseFloat(income) - calculateTotalExpenses();
+    return monthlySavings > 0 && parseFloat(goal) > 0 ? Math.ceil(parseFloat(goal) / monthlySavings) : Infinity;
+  };
+
   const updateGoalProgress = () => {
     const progress = (calculateTotalExpenses() / parseFloat(goal)) * 100;
     setGoalProgress(progress > 100 ? 100 : progress);
@@ -115,6 +120,9 @@ const Index = () => {
           <Progress colorScheme="green" size="sm" value={goalProgress} mt={4} />
           <Text mt={2} textAlign="center">
             Goal Progress: {goalProgress.toFixed(0)}%
+          </Text>
+          <Text mt={2} textAlign="center">
+            Time to Goal: {isFinite(calculateTimeToGoal()) ? `${calculateTimeToGoal()} month(s)` : "Unable to calculate with current income and expenses"}
           </Text>
         </Box>
       </VStack>
